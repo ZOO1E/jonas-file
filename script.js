@@ -34,6 +34,12 @@ currentScore += dice;
 current0El.textContent = currentScore;
 }else{
 //Switch player
-
-}
+if(player1){
+player0.classList.remove('player--activate');
+player1.classList.add('player--activate');
+}}
+if(player0){
+    player1.classList.remove('player--activate');
+    player0.classList.add('player--activate');
+    }
 })
