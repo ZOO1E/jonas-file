@@ -4,7 +4,7 @@ const score1 =document.querySelector('#score--1');
 const score0 =document.querySelector('#score--0');
 
 const diceEl =document.querySelector('.dice');
-const btnnew =document.querySelector('.btn--new');
+const btnNew =document.querySelector('.btn--new');
 const btnRoll =document.querySelector('.btn--roll');
 const btnHold =document.querySelector('.btn--hold');
 const current0El = document.querySelector('#current--0');
@@ -12,17 +12,44 @@ const current1El = document.querySelector('#current--1');
 const player0El =document.querySelector('.player--0');
 const player1El =document.querySelector('.player--1');
 
+const switchPlayer = function(){
+    document.getElementById('current--'+ activePlayer).textContent = 0;
+currentScore = 0;
+activePlayer = activePlayer === 0 ? 1 : 0;// exactly need to understand 
+player0El.classList.toggle('player--active');//if statement is 'remove' -> 'add' , add-> remove
+player1El.classList.toggle('player--active');
+}
 
-const scores = [0,0];
-score1.textContent = 0;
-score0.textContent = 0;
-diceEl.classList.add('hidden');
-let currentScore =0;
-let activePlayer = 0;
-console.log(currentScore);
 
-//Rollinmg dice functionality
+
+
+//starting condition
+let currentScore,scores,activePlayer,playing;// 이렇게 해야 정의되어서 함수갖 ㅓㅇ상적으로 작동함
+
+const init = function (){
+    scores = [0,0];
+    currentScore =0;
+     activePlayer = 0;
+     playing = true;
+     diceEl.classList.add('hidden');
+
+    score1.textContent = 0;
+    score0.textContent = 0;
+    current0El.textContent =0;
+    current1El.textContent = 0;
+
+    player0El.classList.remove('player--winner');
+    player1El.classList.remove('player--winner');
+    player0El.classList.add('player--active');
+    player1El.classList.remove('player--active');
+   
+}
+init(); //이렇게 하면   
+console.log(init);
+
+//Rollinmg dice functionality--------------------------
 btnRoll.addEventListener('click',function(){
+    if (playing){ 
     //1.Geneating a random roll
 const dice =  Math.trunc(Math.random() * 6)+1
     //2. Display dice
@@ -35,10 +62,33 @@ currentScore += dice;
 document.getElementById('current--'+ activePlayer).textContent =currentScore;
 }else{
 //Switch player
-document.getElementById('current--'+ activePlayer).textContent = 0;
-currentScore = 0;
-activePlayer = activePlayer === 0 ? 1 : 0;// exactly need to understand 
-player0El.classList.toggle('player--active');//if statement is 'remove' -> 'add' , add-> remove
-player1El.classList.toggle('player--active');
+switchPlayer();
+}
+}});
+
+//Hold Button ---------------------------------------------
+btnHold.addEventListener('click',function(){
+    if (playing){ // it is importnant! false 일때는 작동 x
+    //1.add current score to active player's score
+scores[activePlayer] += currentScore;
+//scores[1] = scores[1] + currentScore;
+document.getElementById('score--'+ activePlayer).textContent = scores[activePlayer];  
+//2.Check if player's sscore is >=100
+    //Finish the game
+if(scores[activePlayer] >= 20) {
+    diceEl.classList.add('hidden');
+    playing = false;
+    document.querySelector('.player--' + activePlayer).classList.add('player--winner');
+    document.querySelector('.player--' + activePlayer).classList.remove('player--active');
+
+}else{
+    //Switch the Players
+    switchPlayer();
+
+}
+
 }
 });
+
+//New Game Button -----------------------------------------
+btnNew.addEventListener('click',init); //주의 할것 'click' 이랑 ''click ' 이랑은 다른다!!!!!!!!!!!!!!!ㅆㅂ!!
