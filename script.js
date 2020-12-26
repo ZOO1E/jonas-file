@@ -1,8 +1,9 @@
 'use strict';
 
+//html에서 필요한 class ,id 값들을 가지고 옴!
+//주로 우리가 변경해야 하는 값들을 넣어 놓는다.
 const score1 =document.querySelector('#score--1');
 const score0 =document.querySelector('#score--0');
-
 const diceEl =document.querySelector('.dice');
 const btnNew =document.querySelector('.btn--new');
 const btnRoll =document.querySelector('.btn--roll');
@@ -12,8 +13,8 @@ const current1El = document.querySelector('#current--1');
 const player0El =document.querySelector('.player--0');
 const player1El =document.querySelector('.player--1');
 
-const switchPlayer = function(){
-    document.getElementById('current--'+ activePlayer).textContent = 0;
+const switchPlayer = function(){ //we don't need to duplicate!
+document.getElementById('current--'+ activePlayer).textContent = 0; //getEl을 쓰면 query를 쎃을때 붙는 #이 필요 X
 currentScore = 0;
 activePlayer = activePlayer === 0 ? 1 : 0;// exactly need to understand 
 player0El.classList.toggle('player--active');//if statement is 'remove' -> 'add' , add-> remove
@@ -29,9 +30,9 @@ let currentScore,scores,activePlayer,playing;// 이렇게 해야 정의되어서
 const init = function (){
     scores = [0,0];
     currentScore =0;
-     activePlayer = 0;
-     playing = true;
-     diceEl.classList.add('hidden');
+    activePlayer = 0;
+    playing = true;
+    diceEl.classList.add('hidden');
 
     score1.textContent = 0;
     score0.textContent = 0;
@@ -42,10 +43,10 @@ const init = function (){
     player1El.classList.remove('player--winner');
     player0El.classList.add('player--active');
     player1El.classList.remove('player--active');
-   
 }
 init(); //이렇게 하면   
 console.log(init);
+
 
 //Rollinmg dice functionality--------------------------
 btnRoll.addEventListener('click',function(){
@@ -64,18 +65,20 @@ document.getElementById('current--'+ activePlayer).textContent =currentScore;
 //Switch player
 switchPlayer();
 }
-}});
+}
+});
+
 
 //Hold Button ---------------------------------------------
 btnHold.addEventListener('click',function(){
     if (playing){ // it is importnant! false 일때는 작동 x
     //1.add current score to active player's score
-scores[activePlayer] += currentScore;
+scores[activePlayer] += currentScore;// 값을 저장할 때 쓰는 Array property
 //scores[1] = scores[1] + currentScore;
 document.getElementById('score--'+ activePlayer).textContent = scores[activePlayer];  
 //2.Check if player's sscore is >=100
     //Finish the game
-if(scores[activePlayer] >= 20) {
+if(scores[activePlayer] >= 100) {
     diceEl.classList.add('hidden');
     playing = false;
     document.querySelector('.player--' + activePlayer).classList.add('player--winner');
